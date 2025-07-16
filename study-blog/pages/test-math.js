@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
-import { InlineMath, DisplayMath } from '../components/Formula';
+import dynamic from 'next/dynamic';
 import Script from 'next/script';
-import MathJax from '../components/MathJax';
+// import { InlineMath, DisplayMath } from '../components/Formula';
+// import MathJax from '../components/MathJax';
+const InlineMath = dynamic(() => import('../components/Formula').then(mod => mod.InlineMath), { ssr: false });
+const DisplayMath = dynamic(() => import('../components/Formula').then(mod => mod.DisplayMath), { ssr: false });
+const MathJax = dynamic(() => import('../components/MathJax'), { ssr: false });
 
 export default function TestMath() {
   return (
