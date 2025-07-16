@@ -35,7 +35,7 @@ export default function About() {
             </p>
             <ul>
               <li>Email: 3331908788@qq.com</li>
-              <li>GitHub: <a href="https://github.com/699574" target="_blank" rel="noopener noreferrer">github.com/yourusername</a></li>
+              <li>GitHub: <a href="https://github.com/699574" target="_blank" rel="noopener noreferrer">github.com/699574</a></li>
             </ul>
           </div>
         </div>
