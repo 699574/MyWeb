@@ -34,8 +34,8 @@ export default function About() {
               如果你有任何问题、建议或者想法，欢迎通过以下方式联系我：
             </p>
             <ul>
-              <li>Email: your.email@example.com</li>
-              <li>GitHub: <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">github.com/yourusername</a></li>
+              <li>Email: 3331908788@qq.com</li>
+              <li>GitHub: <a href="https://github.com/699574" target="_blank" rel="noopener noreferrer">github.com/yourusername</a></li>
             </ul>
           </div>
         </div>
