@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import Layout from '../../components/Layout';
+import MathJax from '../../components/MathJax';
 import { getAllPostSlugs, getPostData } from '../../lib/api';
 
 export default function Post({ postData }) {
@@ -14,6 +15,7 @@ export default function Post({ postData }) {
 
   return (
     <Layout title={`${postData.title} | 学习笔记`}>
+      <MathJax />
       <article className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
         <div className="p-6">
           <h1 className="text-3xl font-bold mb-4">{postData.title}</h1>

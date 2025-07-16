@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  // 如果你的GitHub Pages仓库不是在根目录，需要设置basePath
-  basePath: '/MyWeb',
+  // 根据环境变量来设置basePath，仅在生产环境下使用/MyWeb前缀
+  basePath: process.env.NODE_ENV === 'production' ? '/MyWeb' : '',
   images: {
     unoptimized: true
   }

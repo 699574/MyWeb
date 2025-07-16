@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Navbar from './Navbar';
+import MathJax from './MathJax';
 
 export default function Layout({ children, title = '学习笔记' }) {
   return (
@@ -9,7 +10,9 @@ export default function Layout({ children, title = '学习笔记' }) {
         <meta name="description" content="我的学习笔记和心得体会" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      
+      <MathJax />
+      
       <Navbar />
 
       <main className="container mx-auto px-4 py-8 flex-grow">

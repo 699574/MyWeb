@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
+import gfm from 'remark-gfm';
 
 const postsDirectory = path.join(process.cwd(), 'content', 'posts');
 
@@ -57,6 +58,60 @@ export function getAllPostSlugs() {
   });
 }
 
+// 处理LaTeX公式，确保其中的特殊字符不被Markdown解析器处理
+function processLatexFormulas(content) {
+  // 存储所有公式的映射
+  const formulas = [];
+  let counter = 0;
+  
+  // 替换块级公式 ($$...$$)
+  let processedContent = content.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
+    const placeholder = `LATEX_BLOCK_${counter}`;
+    formulas.push({ placeholder, formula: match });
+    counter++;
+    return placeholder;
+  });
+  
+  // 替换行内公式 ($...$)
+  processedContent = processedContent.replace(/\$([^\$\n]+?)\$/g, (match, formula) => {
+    const placeholder = `LATEX_INLINE_${counter}`;
+    formulas.push({ placeholder, formula: match });
+    counter++;
+    return placeholder;
+  });
+  
+  return { processedContent, formulas };
+}
+
+// 恢复LaTeX公式
+function restoreLatexFormulas(html, formulas) {
+  let restoredHtml = html;
+  
+  formulas.forEach(({ placeholder, formula }) => {
+    // 对于块级公式，确保它们在自己的div中
+    if (placeholder.includes('BLOCK')) {
+      // 处理被p标签包裹的情况
+      restoredHtml = restoredHtml.replace(
+        new RegExp(`<p>\\s*${placeholder}\\s*<\/p>`, 'g'),
+        `<div class="math math-display">${formula}</div>`
+      );
+      // 处理可能没有被p标签包裹的情况
+      restoredHtml = restoredHtml.replace(
+        new RegExp(`\\b${placeholder}\\b`, 'g'),
+        `<div class="math math-display">${formula}</div>`
+      );
+    } else {
+      // 对于行内公式，简单替换回原始公式
+      restoredHtml = restoredHtml.replace(
+        new RegExp(`\\b${placeholder}\\b`, 'g'),
+        `<span class="math math-inline">${formula}</span>`
+      );
+    }
+  });
+  
+  return restoredHtml;
+}
+
 export async function getPostData(slug) {
   const fullPath = path.join(postsDirectory, `${slug}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
@@ -64,18 +119,39 @@ export async function getPostData(slug) {
   // 使用gray-matter解析文章元数据
   const matterResult = matter(fileContents);
 
-  // 使用remark将markdown转换为HTML字符串
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content);
-  const contentHtml = processedContent.toString();
+  try {
+    // 预处理LaTeX公式，防止它们被Markdown解析器修改
+    const { processedContent, formulas } = processLatexFormulas(matterResult.content);
+    
+    // 使用remark将markdown转换为HTML字符串
+    const processedResult = await remark()
+      .use(gfm)  // 使用GitHub风格Markdown支持，包括表格
+      .use(html, { 
+        sanitize: false,  // 不进行严格的HTML过滤
+      })
+      .process(processedContent);
+      
+    // 获取处理后的HTML
+    let contentHtml = processedResult.toString();
+    
+    // 恢复LaTeX公式
+    contentHtml = restoreLatexFormulas(contentHtml, formulas);
 
-  // 将数据与id和contentHtml组合
-  return {
-    slug,
-    contentHtml,
-    ...matterResult.data,
-  };
+    // 将数据与id和contentHtml组合
+    return {
+      slug,
+      contentHtml,
+      ...matterResult.data,
+    };
+  } catch (error) {
+    console.error('处理Markdown时出错:', error);
+    // 返回原始内容，避免完全失败
+    return {
+      slug,
+      contentHtml: `<pre>${matterResult.content}</pre>`,
+      ...matterResult.data,
+    };
+  }
 }
 
 export function getAllTags() {

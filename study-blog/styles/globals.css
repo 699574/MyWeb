@@ -2,6 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* 数学公式样式 */
+.math-inline, .math.math-inline {
+  display: inline;
+  white-space: nowrap;
+}
+
+.math-display, .math.math-display {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* 确保公式不会导致行内换行 */
+.katex {
+  font-size: 1.1em;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5em 0;
+}
+
+/* 确保公式中的上标和下标正确显示 */
+.katex .msupsub {
+  text-align: left;
+}
+
+/* 确保行内公式不会导致换行 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+/* 确保行内公式正确显示 */
+.katex {
+  font-size: 1.1em;
+  text-rendering: auto;
+}
+
+/* 兼容旧的类名 */
+.math {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.math-inline {
+  display: inline;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.math-display {
+  display: block;
+  text-align: center;
+  padding: 0.5rem 0;
+  margin: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* 保留旧的类名以兼容性 */
+.mathjax {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+span.mathjax {
+  display: inline;
+  margin: 0;
+}
+
+div.mathjax {
+  display: block;
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
@@ -26,4 +132,41 @@
   a {
     @apply text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300;
   }
+}
+
+/* 添加表格样式 */
+.prose table {
+  @apply w-full border-collapse my-6;
+}
+
+.prose table th,
+.prose table td {
+  @apply border border-gray-300 dark:border-gray-700 px-4 py-2;
+}
+
+.prose table th {
+  @apply bg-gray-100 dark:bg-gray-800 font-semibold;
+}
+
+.prose table tr:nth-child(even) {
+  @apply bg-gray-50 dark:bg-gray-900;
+}
+
+/* MathJax样式 */
+.MathJax {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+.MathJax_Display, .MathJax_SVG_Display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  margin: 1rem 0 !important;
+}
+
+/* 确保行间公式正确显示 */
+.prose p {
+  overflow-x: auto;
 } 
