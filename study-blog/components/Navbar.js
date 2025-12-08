@@ -24,6 +24,10 @@ export default function Navbar() {
                 首页
               </Link>
               
+              <Link href="/leetcode" className={`px-3 py-2 rounded-md text-sm font-medium hover:text-blue-600 dark:hover:text-blue-400 ${isActive('/leetcode')}`}>
+                LeetCode
+              </Link>
+              
               <Link href="/tags" className={`px-3 py-2 rounded-md text-sm font-medium hover:text-blue-600 dark:hover:text-blue-400 ${isActive('/tags')}`}>
                 标签
               </Link>
