@@ -1,12 +1,10 @@
 ---
 title: 'RoPE'
-date: '2025-07-14'
+date: '2025-12-14'
 tags: ['深度学习','Attention']
 ---
 
 先简单的写一下位置编码(Positional Encoding)：在早期的word embedding模型中，词只有词义嵌入向量，而没有关于位置的信息，而词在句子中的位置又是十分重要的，因此引入了位置编码技术。早期的PE技术基本采用绝对位置编码，直接把当前的位置向量和词向量相加，典型的例子就是Attention is All You Need这篇论文中的Positional Encoding模块。绝对位置编码只自身的位置编码只于当前的位置k相关。
-
-![img](./Rope.png)
 
 Transformer在这里使用的是正余弦位置编码，公式为
 
