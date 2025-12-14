@@ -19,9 +19,14 @@ $p_{k,2i}$ 和 $p_{k,2i+1}$ 是位置 k 的编码向量的第 2i 和第 2i+1 个
 给定位置为m的token $q_m$，位置为n的token $k_n$
 词嵌入向量与绝对位置信息相乘，得到 $q_m e^{im\theta}$， $k_n e^{in\theta}$
 这时候我们再来计算一下两个token之间的关注度:
-$$<q_m e^{im\theta}, k_n e^{in\theta}>$$
-$$= \text{Re}[(q_m e^{im\theta}) (k_n e^{in\theta})^*]$$
-$$= \text{Re}[q_m k_n^* e^{i(m-n)\theta}]$$
+
+$$
+\begin{aligned}
+&<q_m e^{im\theta}, k_n e^{in\theta}> \\
+&= \text{Re}[(q_m e^{im\theta}) (k_n e^{in\theta})^*] \\
+&= \text{Re}[q_m k_n^* e^{i(m-n)\theta}]
+\end{aligned}
+$$
 
 不得不说，这里的机制做的相当的巧妙。RoPE通过旋转矩阵的特性，使用绝对位置编码体现出了相对位置编码。RoPE在外推上具有很大的潜力。外推就是要解决训练和预测长度不一致的问题，模型在预测时可能见到训练时没有遇到的位置编码，且要处理的token更多。一个解决方法是使用掩码，只让模型看到训练长度个token。这种方法效果有限。另外的方法有：
 - 线性缩放token间距离，进行外推和内插。
